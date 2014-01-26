@@ -42,6 +42,10 @@ public class MainActivity extends Activity {
 	// Contrasting Color
 	TextView LightContrastingColorTextView;
 	TextView DarkContrastingColorTextView;
+	
+	//Complementary Colors
+	View ComplementaryColor1;
+	View ComplementaryColor2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,10 @@ public class MainActivity extends Activity {
 		//Contrasting colors
 		createLightContrastingColor();
 		createDarkContrastingColor();
+		
+		//Complementary Colors
+		createComplementaryColorLight();
+		createComplementaryColorDark();
 	}
 
 	// Setup Functions
@@ -162,6 +170,23 @@ public class MainActivity extends Activity {
 				.blackOrWhiteContrastingColor(backgroundColor));
 
 	}
+	
+	//Complementary Colors
+	private void createComplementaryColorLight() {
+		//Connect XML View
+		ComplementaryColor1 = findViewById(R.id.ComplementaryColor1);
+		
+		//Set complement color
+		ComplementaryColor1.setBackgroundColor(Colour.complementaryColor(Colour.wheatColor()));
+	}
+	
+	private void createComplementaryColorDark() {
+		//Connect XML View
+		ComplementaryColor2 = findViewById(R.id.ComplementaryColor2);
+		
+		//Set complement color
+		ComplementaryColor2.setBackgroundColor(Colour.complementaryColor(Colour.dangerColor()));
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -170,4 +195,6 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	
+	
 }

@@ -125,7 +125,7 @@ public class Colour extends Color {
 	 */
 	public static int complementaryColor(int color)
 	{
-		float[] hsv = {};
+		float[] hsv = new float[3];
 		Colour.colorToHSV(color, hsv);
 		float newH = Colour.addDegrees(180, hsv[0]);
 		hsv[0] = newH;
