@@ -61,7 +61,7 @@ int complementaryColor = Colour.complementaryColor(inputColor);
 
 ## Generating Color Schemes ##
 
-You can create a 5-color scheme based off of a UIColor using the following method. It takes in a UIColor and one of the ColorSchemeTypes defined in Colours. It returns an NSArray of 4 new UIColor objects to create a pretty nice color scheme that complements the root color you passed in.
+You can create a 5-color scheme based off of a UIColor using the following method. It takes in a UIColor and one of the ColorSchemeTypes defined in Colours. It returns an int[] of 4 new colors to create a pretty nice color scheme that complements the root color you passed in.
 
 ```java
 int[] complementaryColors = Colour.colorSchemeOfType(inputColor, ColorScheme.ColorSchemeComplementary);
