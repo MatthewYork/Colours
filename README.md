@@ -33,7 +33,7 @@ Huzzah! Colours automagically integrates all of its colors to your project, just
 
 ###Code
 
-Let's say, however that you would like to set the color of something in code. Colours has you covered. Every single color available in XML is also avalable as a static method, much like the android system colors. To retrieve a predefined color's int representation, simply call it's corresponding method:
+Let's say, however, that you would like to set the color of something in code. Colours has you covered. Every single color available in XML is also avalable as a static method, much like the android system colors. To retrieve a predefined color's int representation, simply call it's corresponding method:
 
 ```java
 int seashellColor = Colour.seashellColor();
