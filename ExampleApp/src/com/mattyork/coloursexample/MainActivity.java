@@ -1,6 +1,5 @@
 package com.mattyork.coloursexample;
 
-import android.R.integer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
