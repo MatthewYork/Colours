@@ -7,6 +7,10 @@ Colours is a port of the Colours Library for iOS made by my good friend [**Ben G
 ####Maven Central
  Colours is available in Maven Central under the groupId <code>com.github.matthewyork</code> and the artifactId <code>ColoursLibrary</code>
 
+ Incorporate Colours via Gradle with:
+
+ `compile 'com.github.matthewyork:ColoursLibrary:1.0.+@aar'`
+ 
 ####Manual Installation
 - **Import** the Colours library into your workspace, found in the ColoursLibrary Folder.
 - Right-click on your android **project folder** and click on the project properties.
