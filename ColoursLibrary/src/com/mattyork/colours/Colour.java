@@ -2,6 +2,9 @@ package com.mattyork.colours;
 
 import android.graphics.Color;
 
+/**
+ * The type Colour.
+ */
 public class Colour extends Color {
 	
 	//Color Scheme Enumeration (for color scheme generation)
@@ -104,7 +107,7 @@ public class Colour extends Color {
 	/**
 	 * Returns black or white, depending on which color would contrast best with the provided color.
 	 * 
-	 * @param int (Color)
+	 * @param color (Color)
 	 *            
 	 * @return int
 	 */
@@ -119,7 +122,7 @@ public class Colour extends Color {
 	/**
 	 * This method will create a color instance that is the exact opposite color from another color on the color wheel. The same saturation and brightness are preserved, just the hue is changed.
 	 * 
-	 * @param int (Color)
+	 * @param color (Color)
 	 *            
 	 * @return int
 	 */
@@ -132,6 +135,118 @@ public class Colour extends Color {
 		
 		return Colour.HSVToColor(hsv);
 	}
+
+    // CMYK
+    /**
+     * Color to cMYK.
+     *
+     * @param color the color int
+     * @return float [ ]
+     */
+    public static float[] colorToCMYK(int color)
+    {
+        float r = Colour.red(color);
+        float g = Colour.green(color);
+        float b = Colour.blue(color);
+        float c = 1 - r/255;
+        float m = 1 - g/255;
+        float y = 1 - b/255;
+        float k = Math.min(1, Math.min(c, Math.min(m, y)));
+        if (k == 1) {
+            c = 0;
+            m = 0;
+            y = 0;
+        }
+        else {
+            c = (c - k)/(1 - k);
+            m = (m - k)/(1 - k);
+            y = (y - k)/(1 - k);
+        }
+
+        return new float[]{c, m, y, k};
+    }
+
+
+    /**
+     * CMYK to color.
+     *
+     * @param cmyk the cmyk array
+     * @return color
+     */
+    public static int CMYKtoColor(float[] cmyk)
+    {
+        float c = cmyk[0] * (1 - cmyk[3]) + cmyk[3];
+        float m = cmyk[1] * (1 - cmyk[3]) + cmyk[3];
+        float y = cmyk[2] * (1 - cmyk[3]) + cmyk[3];
+        return Colour.rgb((int)((1-c)*255), (int)((1-m)*255), (int)((1-y)*255));
+    }
+
+    /**
+     * Color to cIE _ lAB.
+     *
+     * @param color the color int
+     * @return double[]
+     */
+    public static double[] colorToCIE_LAB(int color)
+    {
+        // Convert Color to XYZ format first
+        double r = Colour.red(color)/255.0;
+        double g = Colour.green(color)/255.0;
+        double b = Colour.blue(color)/255.0;
+
+        // Create deltaRGB
+        r = (r > 0.04045) ? Math.pow((r + 0.055)/1.055, 2.40) : (r/12.92);
+        g = (g > 0.04045) ? Math.pow((g + 0.055)/1.055, 2.40) : (g/12.92);
+        b = (b > 0.04045) ? Math.pow((b + 0.055)/1.055, 2.40) : (b/12.92);
+
+        // Create XYZ
+        double X = r*41.24 + g*35.76 + b*18.05;
+        double Y = r*21.26 + g*71.52 + b*7.22;
+        double Z = r*1.93 + g*11.92 + b*95.05;
+
+        // Convert XYZ to L*a*b*
+        X = X/95.047;
+        Y = Y/100.000;
+        Z = Z/108.883;
+        X = (X > Math.pow((6.0/29.0), 3.0)) ? Math.pow(X, 1.0/3.0) : (1/3)*Math.pow((29.0/6.0), 2.0) * X + 4/29.0;
+        Y = (Y > Math.pow((6.0/29.0), 3.0)) ? Math.pow(Y, 1.0/3.0) : (1/3)*Math.pow((29.0/6.0), 2.0) * Y + 4/29.0;
+        Z = (Z > Math.pow((6.0/29.0), 3.0)) ? Math.pow(Z, 1.0/3.0) : (1/3)*Math.pow((29.0/6.0), 2.0) * Z + 4/29.0;
+        double CIE_L = 116*Y - 16;
+        double CIE_a = 500 * (X - Y);
+        double CIE_b = 200 * (Y - Z);
+        return new double[]{CIE_L, CIE_a, CIE_b};
+    }
+
+    /**
+     * CIE _ lab to color.
+     *
+     * @param cie_lab the double[]
+     * @return color
+     */
+    public static int CIE_LabToColor(double[] cie_lab)
+    {
+        double L = cie_lab[0];
+        double A = cie_lab[1];
+        double B = cie_lab[2];
+        double Y = (L + 16.0)/116.0;
+        double X = A/500 + Y;
+        double Z = Y - B/200;
+        X = (Math.pow(X, 3.0) > 0.008856) ? Math.pow(X, 3.0) : (X - 4/29.0)/7.787;
+        Y = (Math.pow(Y, 3.0) > 0.008856) ? Math.pow(Y, 3.0) : (Y - 4/29.0)/7.787;
+        Z = (Math.pow(Z, 3.0) > 0.008856) ? Math.pow(Z, 3.0) : (Z - 4/29.0)/7.787;
+        X = X*.95047;
+        Y = Y*1.00000;
+        Z = Z*1.08883;
+
+        // Convert XYZ to RGB
+        double R = X*3.2406 + Y*-1.5372 + Z*-0.4986;
+        double G = X*-0.9689 + Y*1.8758 + Z*0.0415;
+        double _B = X*0.0557 + Y*-0.2040 + Z*1.0570;
+        R = (R > 0.0031308) ? 1.055 * (Math.pow(R, (1/2.4))) - 0.055 : R * 12.92;
+        G = (G > 0.0031308) ? 1.055 * (Math.pow(G, (1/2.4))) - 0.055 : G * 12.92;
+        _B = (_B > 0.0031308) ? 1.055 * (Math.pow(_B, (1/2.4))) - 0.055 : _B * 12.92;
+        return Colour.rgb((int)(R*255), (int)(G*255), (int)(_B*255));
+    }
 
 	// Predefined Colors
 	// System Colors
