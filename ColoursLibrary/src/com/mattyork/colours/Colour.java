@@ -12,6 +12,10 @@ public class Colour extends Color {
 			ColorSchemeAnalagous, ColorSchemeMonochromatic, ColorSchemeTriad, ColorSchemeComplementary
 		}
 
+        public enum ColorDistanceFormula {
+            ColorDistanceFormulaCIE76, ColorDistanceFormulaCIE94, ColorDistanceFormulaCIE2000
+        }
+
 	// ///////////////////////////////////
 	// 4 Color Scheme from Color
 	// ///////////////////////////////////
@@ -246,6 +250,84 @@ public class Colour extends Color {
         G = (G > 0.0031308) ? 1.055 * (Math.pow(G, (1/2.4))) - 0.055 : G * 12.92;
         _B = (_B > 0.0031308) ? 1.055 * (Math.pow(_B, (1/2.4))) - 0.055 : _B * 12.92;
         return Colour.rgb((int)(R*255), (int)(G*255), (int)(_B*255));
+    }
+
+    public static double distanceBetweenColors(int colorA, int colorB) {
+        return distanceBetweenColorsWithFormula(colorA, colorB, ColorDistanceFormula.ColorDistanceFormulaCIE94);
+    }
+
+    public static double distanceBetweenColorsWithFormula(int colorA, int colorB, ColorDistanceFormula formula) {
+        double[] lab1 = Colour.colorToCIE_LAB(colorA);
+        double[] lab2 = Colour.colorToCIE_LAB(colorB);
+        double L1 = lab1[0];
+        double A1 = lab1[1];
+        double B1 = lab1[2];
+        double L2 = lab2[0];
+        double A2 = lab2[1];
+        double B2 = lab2[2];
+
+        // CIE76 first
+        if (formula == ColorDistanceFormula.ColorDistanceFormulaCIE76) {
+            double distance = Math.sqrt(Math.pow((L1 - L2), 2) + Math.pow((A1 - A2), 2) + Math.pow((B1 - B2), 2));
+            return distance;
+        }
+
+        // More Common Variables
+        double kL = 1;
+        double kC = 1;
+        double kH = 1;
+        double k1 = 0.045;
+        double k2 = 0.015;
+        double deltaL = L1 - L2;
+        double C1 = Math.sqrt((A1 * A1) + (B1 * B1));
+        double C2 = Math.sqrt((A2 * A2) + (B2 * B2));
+        double deltaC = C1 - C2;
+        double deltaH = Math.sqrt(Math.pow((A1 - A2), 2.0) + Math.pow((B1 - B2), 2.0) - Math.pow(deltaC, 2.0));
+        double sL = 1;
+        double sC = 1 + k1*(Math.sqrt((A1 * A1) + (B1 * B1)));
+        double sH = 1 + k2*(Math.sqrt((A1 * A1) + (B1 * B1)));
+
+        // CIE94
+        if (formula == ColorDistanceFormula.ColorDistanceFormulaCIE94) {
+            return Math.sqrt(Math.pow((deltaL / (kL * sL)), 2.0) + Math.pow((deltaC / (kC * sC)), 2.0) + Math.pow((deltaH / (kH * sH)), 2.0));
+        }
+
+        // CIE2000
+        // More variables
+        double deltaLPrime = L2 - L1;
+        double meanL = (L1 + L2)/2;
+        double meanC = (C1 + C2)/2;
+        double aPrime1 = A1 + A1/2*(1 - Math.sqrt(Math.pow(meanC, 7.0) / (Math.pow(meanC, 7.0) + Math.pow(25.0, 7.0))));
+        double aPrime2 = A2 + A2/2*(1 - Math.sqrt(Math.pow(meanC, 7.0) / (Math.pow(meanC, 7.0) + Math.pow(25.0, 7.0))));
+        double cPrime1 = Math.sqrt((aPrime1 * aPrime1) + (B1 * B1));
+        double cPrime2 = Math.sqrt((aPrime2 * aPrime2) + (B2 * B2));
+        double cMeanPrime = (cPrime1 + cPrime2)/2;
+        double deltaCPrime = cPrime1 - cPrime2;
+        double hPrime1 = Math.atan2(B1, aPrime1);
+        double hPrime2 = Math.atan2(B2, aPrime2);
+        hPrime1 = hPrime1 % RAD(360.0);
+        hPrime2 = hPrime2 % RAD(360.0);
+        double deltahPrime = 0;
+        if (Math.abs(hPrime1 - hPrime2) <= RAD(180.0)) {
+            deltahPrime = hPrime2 - hPrime1;
+        }
+        else {
+            deltahPrime = (hPrime2 <= hPrime1) ? hPrime2 - hPrime1 + RAD(360.0) : hPrime2 - hPrime1 - RAD(360.0);
+        }
+        double deltaHPrime = 2 * Math.sqrt(cPrime1 * cPrime2) * Math.sin(deltahPrime / 2);
+        double meanHPrime = (Math.abs(hPrime1 - hPrime2) <= RAD(180.0)) ? (hPrime1 + hPrime2)/2 : (hPrime1 + hPrime2 + RAD(360.0))/2;
+        double T = 1 - 0.17*Math.cos(meanHPrime - RAD(30.0)) + 0.24*Math.cos(2 * meanHPrime)+0.32*Math.cos(3*meanHPrime + RAD(6.0)) - 0.20*Math.cos(4 * meanHPrime - RAD(63.0));
+        sL = 1 + (0.015 * Math.pow((meanL - 50), 2))/Math.sqrt(20 + Math.pow((meanL - 50), 2));
+        sC = 1 + 0.045*cMeanPrime;
+        sH = 1 + 0.015*cMeanPrime*T;
+        double Rt = -2 * Math.sqrt(Math.pow(cMeanPrime, 7) / (Math.pow(cMeanPrime, 7) + Math.pow(25.0, 7))) * Math.sin(RAD(60.0) * Math.exp(-1 * Math.pow((meanHPrime - RAD(275.0)) / RAD(25.0), 2)));
+
+        // Finally return CIE2000 distance
+        return Math.sqrt(Math.pow((deltaLPrime / (kL * sL)), 2) + Math.pow((deltaCPrime / (kC * sC)), 2) + Math.pow((deltaHPrime / (kH * sH)),  Rt * (deltaC / (kC * sC)) * (deltaHPrime / (kH * sH))));
+    }
+    
+    private static double RAD(double degree) {
+        return degree * Math.PI/180;
     }
 
 	// Predefined Colors
