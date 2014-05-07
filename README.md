@@ -134,7 +134,7 @@ Here are the different examples starting with a color scheme based off of <code>
 
 * [**Matthew York**](https://github.com/MatthewYork) - Author of Colours for Android 
 * [**Ben Gordon**](https://github.com/bennyguitar) - Author of original iOS version of Colours
-* [**Aaron Fleshner**](https://github.com/adfleshner) - Teaching me Android and being awesome like that
+* [**Aaron Fleshner**](https://github.com/adfleshner) - Teaching me Android and being awesome like that. (Also adding holo to the mix)
 
 ## License
 The MIT License (MIT)
