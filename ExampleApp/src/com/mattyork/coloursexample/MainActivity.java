@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
 	View ComplementaryColor1;
 	View ComplementaryColor2;
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -195,6 +196,5 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-	
-	
+
 }
