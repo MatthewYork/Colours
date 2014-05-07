@@ -32,3 +32,6 @@ proguard/
 
 # Mac OS X
 .DS_Store
+
+#Android Gears
+Gears/
