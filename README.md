@@ -25,7 +25,6 @@ Colours is a port of the Colours Library for iOS made by my good friend [**Ben G
 includes all [Holo Colors](https://code.google.com/p/actionbarcompat/source/browse/res/values/holo__colors.xml?r=a03d3fd20e4b7b04740d7541dbcd756a7fa760ca).
 
 
-
 ## Using Predefined Colors
 Colours works exactly like the predefined Android colors. In fact, the Colour class is a subclass of android.graphics.Color, so you can actually use the <code>Colour</code> class where you normally use <code>Color</code> to gain access to the cool new methods of the Colour Library without losing any methods in the <code>Color</code>  class. 
 
