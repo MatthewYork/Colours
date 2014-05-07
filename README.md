@@ -29,7 +29,7 @@ Colours works exactly like the predefined Android colors. In fact, the Colour cl
 
 ###XML
 
-To user your **HUGE** new palette of colors in XML, reference a color just as you would a color in a local Color.xml resource file:
+To use your **HUGE** new palette of colors in XML, reference a color just as you would a color in a local Color.xml resource file:
 
 ```xml
   <View
