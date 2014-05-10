@@ -136,6 +136,9 @@ Here are the different examples starting with a color scheme based off of <code>
 * [**Ben Gordon**](https://github.com/bennyguitar) - Author of original iOS version of Colours
 * [**Aaron Fleshner**](https://github.com/adfleshner) - Teaching me Android and being awesome like that. (Also adding holo to the mix)
 
+I would also like to thank **God** through whom all things live and move and have their being. [Acts 17:28](http://www.biblegateway.com/passage/?search=Acts+17%3A16-34&version=NIV)
+
+
 ## License
 The MIT License (MIT)
 
