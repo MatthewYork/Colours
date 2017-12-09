@@ -4,14 +4,14 @@ Colours is a port of the Colours Library for iOS made by my good friend [**Ben G
 
 ## Installation
 
-####Maven Central
+#### Maven Central
  Colours is available in Maven Central under the groupId <code>com.github.matthewyork</code> and the artifactId <code>ColoursLibrary</code>
 
  Incorporate Colours via Gradle with:
 
  `compile 'com.github.matthewyork:ColoursLibrary:1.0.+@aar'`
  
-####Manual Installation
+#### Manual Installation
 - **Import** the Colours library into your workspace, found in the ColoursLibrary Folder.
 - Right-click on your android **project folder** and click on the project properties.
 - Click on the "Android" tab and then "Add" under the **Library** section.
@@ -27,7 +27,7 @@ Colours is a port of the Colours Library for iOS made by my good friend [**Ben G
 ## Using Predefined Colors
 Colours works exactly like the predefined Android colors. In fact, the Colour class is a subclass of android.graphics.Color, so you can actually use the <code>Colour</code> class where you normally use <code>Color</code> to gain access to the cool new methods of the Colour Library without losing any methods in the <code>Color</code>  class. 
 
-###XML
+### XML
 
 To use your **HUGE** new palette of colors in XML, reference a color just as you would a color in a local Color.xml resource file:
 
@@ -41,7 +41,7 @@ To use your **HUGE** new palette of colors in XML, reference a color just as you
 
 Huzzah! Colours automagically integrates all of its colors to your project, just as if you had defined them yourself. (You can tell all your friends that you made them. We won't tell!)
 
-###Code
+### Code
 
 Let's say, however, that you would like to set the color of something in code. Colours has you covered. Every single color available in XML is also avalable as a static method, much like the android system colors. To retrieve a predefined color's int representation, simply call it's corresponding method:
 
